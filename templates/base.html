@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Delivery Service{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="{% url 'product_list' %}" class="logo">Delivery</a>
+
+                <nav class="nav">
+                    {% if user.is_authenticated %}
+                        {% if not user.is_courier %}
+                            <a href="{% url 'cart_view' %}" class="nav-link cart-link">
+                                Cart
+                                {% if cart_count > 0 %}
+                                    <span class="cart-badge">{{ cart_count }}</span>
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'order_list' %}" class="nav-link">Orders</a>
+                        {% endif %}
+
+                        <a href="{% url 'review_list' %}" class="nav-link">Reviews</a>
+                        <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+
+                        {% if user.is_courier %}
+                            <a href="{% url 'courier_orders' %}" class="nav-link">My Deliveries</a>
+                        {% endif %}
+
+                        <a href="{% url 'logout' %}" class="btn btn-secondary">Sign Out</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-secondary">Sign In</a>
+                        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message message-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Malii Andrii IP-32</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

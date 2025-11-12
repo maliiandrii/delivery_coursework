@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Delivery Service{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <h1 class="mb-3">My Profile</h1>
+
+        <div class="mb-3">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Account Type:</strong> {{ user.get_user_type_display }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <h2 class="mb-2">Update Profile</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                {{ form.phone }}
+            </div>
+
+            <div class="form-group">
+                <label>Delivery Address</label>
+                {{ form.address }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

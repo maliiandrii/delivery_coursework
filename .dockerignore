@@ -1,0 +1,7 @@
+.git
+.gitignore
+.env
+../.venv
+env/
+venv/
+README.md
