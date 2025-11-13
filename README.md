@@ -80,7 +80,7 @@ docker-compose exec web python manage.py populate_data
 ---
 
 
-## 👨‍💻 Author
+## Author
 
 **Andrii Malii IP-32**
 - Course work for a web application for delivery service support
