@@ -1,50 +1,45 @@
 {% extends 'base.html' %}
-
-{% block title %}My Orders - Delivery Service{% endblock %}
-
+{% load translate_tags %}
+{% block title %}{% trans "My Orders - Delivery Service" %}{% endblock %}
 {% block content %}
-<h1 class="mb-3">Your Orders</h1>
-
+<h1 class="mb-3">{% trans "Your Orders" %}</h1>
 <div class="orders-tabs">
-    <button class="tab active" onclick="showTab('active')">Active</button>
-    <button class="tab" onclick="showTab('finished')">Finished</button>
+    <button class="tab active" onclick="showTab('active')">{% trans "Active" %}</button>
+    <button class="tab" onclick="showTab('finished')">{% trans "Finished" %}</button>
 </div>
-
 <div id="active-orders" class="tab-content">
     {% if active_orders %}
         {% for order in active_orders %}
             <div class="order-card">
                 <div class="order-header">
                     <div>
-                        <div class="order-number">Order #{{ order.id }}</div>
+                        <div class="order-number">{% trans "Order #" %}{{ order.id }}</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">
                             {{ order.created_at|date:"F d, Y" }}
                         </div>
                     </div>
                     <span class="order-status status-{{ order.status }}">
-                        {{ order.get_status_display }}
+                        {% trans order.get_status_display %}
                     </span>
                 </div>
-
                 <div class="order-body">
-                    <p><strong>Delivery to:</strong> {{ order.delivery_address }}</p>
-                    <p><strong>Items:</strong> {{ order.items.count }}</p>
+                    <p><strong>{% trans "Delivery to" %}:</strong> {{ order.delivery_address }}</p>
+                    <p><strong>{% trans "Items" %}:</strong> {{ order.items.count }}</p>
                     {% if order.courier %}
-                        <p><strong>Courier:</strong> {{ order.courier.username }}</p>
+                        <p><strong>{% trans "Courier" %}:</strong> {{ order.courier.username }}</p>
                     {% endif %}
                 </div>
-
                 <div class="order-footer">
                     <span class="order-total">${{ order.total_price }}</span>
                     <div style="display: flex; gap: 0.5rem;">
                         <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary btn-small">
-                            View Details
+                            {% trans "View Details" %}
                         </a>
                         <form action="{% url 'cancel_order' order.id %}" method="post" style="margin: 0;"
                               onsubmit="return confirm('Are you sure you want to cancel this order?');">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-small">
-                                Cancel Order
+                                {% trans "Cancel Order" %}
                             </button>
                         </form>
                     </div>
@@ -53,66 +48,59 @@
         {% endfor %}
     {% else %}
         <p style="text-align: center; color: var(--text-light); padding: 2rem;">
-            No active orders
+            {% trans "No active orders" %}
         </p>
     {% endif %}
 </div>
-
 <div id="finished-orders" class="tab-content" style="display: none;">
     {% if finished_orders %}
         {% for order in finished_orders %}
             <div class="order-card">
                 <div class="order-header">
                     <div>
-                        <div class="order-number">Order #{{ order.id }}</div>
+                        <div class="order-number">{% trans "Order #" %}{{ order.id }}</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">
                             {{ order.created_at|date:"F d, Y" }}
                         </div>
                     </div>
                     <span class="order-status status-{{ order.status }}">
-                        {{ order.get_status_display }}
+                        {% trans order.get_status_display %}
                     </span>
                 </div>
-
                 <div class="order-body">
-                    <p><strong>Delivery to:</strong> {{ order.delivery_address }}</p>
-                    <p><strong>Items:</strong> {{ order.items.count }}</p>
+                    <p><strong>{% trans "Delivery to" %}:</strong> {{ order.delivery_address }}</p>
+                    <p><strong>{% trans "Items" %}:</strong> {{ order.items.count }}</p>
                     {% if order.courier %}
-                        <p><strong>Courier:</strong> {{ order.courier.username }}</p>
+                        <p><strong>{% trans "Courier" %}:</strong> {{ order.courier.username }}</p>
                     {% endif %}
                 </div>
-
                 <div class="order-footer">
                     <span class="order-total">${{ order.total_price }}</span>
                     <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary btn-small">
-                        View Details
+                        {% trans "View Details" %}
                     </a>
                 </div>
-
                 {% if order.status == 'delivered' %}
                     <div class="review-section">
                         {% if order.review %}
                             <p style="color: var(--success-color); font-weight: 500;">
-                                ✓ Review submitted
+                                ✓ {% trans "Review submitted" %}
                             </p>
                         {% else %}
                             <form action="{% url 'create_review' order.id %}" method="post"
                                   style="display: flex; gap: 1rem; flex-direction: column;">
                                 {% csrf_token %}
-
                                 <div style="display: flex; gap: 1rem;">
                                     <input type="number" name="rating" min="1" max="5" required
-                                           class="form-input" placeholder="Rating (1-5)"
+                                           class="form-input" placeholder="{% trans "Rating (1-5)" %}"
                                            style="width: 150px;">
-
                                     <textarea name="comment" required class="form-input"
-                                              placeholder="Write your review..." rows="2"
+                                              placeholder="{% trans "Write your review..." %}" rows="2"
                                               style="flex: 1;"></textarea>
                                 </div>
-
                                 <button type="submit" class="btn btn-primary btn-small"
                                         style="align-self: flex-start;">
-                                    Leave a Review
+                                    {% trans "Leave a Review" %}
                                 </button>
                             </form>
                         {% endif %}
@@ -122,21 +110,18 @@
         {% endfor %}
     {% else %}
         <p style="text-align: center; color: var(--text-light); padding: 2rem;">
-            No finished orders
+            {% trans "No finished orders" %}
         </p>
     {% endif %}
 </div>
-
 <script>
 function showTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(content => {
         content.style.display = 'none';
     });
-
     document.querySelectorAll('.tab').forEach(tab => {
         tab.classList.remove('active');
     });
-
     if (tabName === 'active') {
         document.getElementById('active-orders').style.display = 'block';
         document.querySelectorAll('.tab')[0].classList.add('active');

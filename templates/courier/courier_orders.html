@@ -1,181 +1,161 @@
 {% extends 'base.html' %}
-
-{% block title %}Courier Dashboard - Delivery Service{% endblock %}
-
+{% load translate_tags %}
+{% block title %}{% trans "Courier Dashboard - Delivery Service" %}{% endblock %}
 {% block content %}
-<h1 class="mb-3">Courier Dashboard</h1>
-
+<h1 class="mb-3">{% trans "Courier Dashboard" %}</h1>
 <div class="orders-tabs">
-    <button class="tab active" onclick="showTab('available')">Available Orders</button>
-    <button class="tab" onclick="showTab('active')">My Active Orders</button>
-    <button class="tab" onclick="showTab('finished')">Finished Orders</button>
+    <button class="tab active" onclick="showTab('available')">{% trans "Available Orders" %}</button>
+    <button class="tab" onclick="showTab('active')">{% trans "My Active Orders" %}</button>
+    <button class="tab" onclick="showTab('finished')">{% trans "Finished Orders" %}</button>
 </div>
-
 <div id="available-orders" class="tab-content">
     <h2 style="margin-bottom: 1rem; color: var(--primary-color);">
-        Orders waiting to be accepted
+        {% trans "Orders waiting to be accepted" %}
     </h2>
-
     {% if available_orders %}
         {% for order in available_orders %}
             <div class="order-card">
                 <div class="order-header">
                     <div>
-                        <div class="order-number">Order #{{ order.id }}</div>
+                        <div class="order-number">{% trans "Order #" %}{{ order.id }}</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">
                             {{ order.created_at|date:"F d, Y H:i" }}
                         </div>
                     </div>
                     <span class="order-status status-{{ order.status }}">
-                        {{ order.get_status_display }}
+                        {% trans order.get_status_display %}
                     </span>
                 </div>
-
                 <div class="order-body">
-                    <p><strong>Customer:</strong> {{ order.customer.username }}</p>
-                    <p><strong>Delivery to:</strong> {{ order.delivery_address|truncatewords:10 }}</p>
-                    <p><strong>Items:</strong> {{ order.items.count }}</p>
-                    <p><strong>Total:</strong> <span style="font-weight: 600; color: var(--primary-color);">
+                    <p><strong>{% trans "Customer" %}:</strong> {{ order.customer.username }}</p>
+                    <p><strong>{% trans "Delivery to" %}:</strong> {{ order.delivery_address|truncatewords:10 }}</p>
+                    <p><strong>{% trans "Items" %}:</strong> {{ order.items.count }}</p>
+                    <p><strong>{% trans "Total" %}:</strong> <span style="font-weight: 600; color: var(--primary-color);">
                         ${{ order.total_price }}
                     </span></p>
                 </div>
-
                 <div class="order-footer">
                     <form action="{% url 'accept_order' order.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-success btn-small">Accept Order</button>
+                        <button type="submit" class="btn btn-success btn-small">{% trans "Accept Order" %}</button>
                     </form>
                     <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary btn-small">
-                        View Details
+                        {% trans "View Details" %}
                     </a>
                 </div>
             </div>
         {% endfor %}
     {% else %}
         <p style="text-align: center; color: var(--text-light); padding: 2rem;">
-            No available orders
+            {% trans "No available orders" %}
         </p>
     {% endif %}
 </div>
-
 <div id="active-orders" class="tab-content" style="display: none;">
     <h2 style="margin-bottom: 1rem; color: var(--primary-color);">
-        Orders in progress
+        {% trans "Orders in progress" %}
     </h2>
-
     {% if active_orders %}
         {% for order in active_orders %}
             <div class="order-card">
                 <div class="order-header">
                     <div>
-                        <div class="order-number">Order #{{ order.id }}</div>
+                        <div class="order-number">{% trans "Order #" %}{{ order.id }}</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">
                             {{ order.created_at|date:"F d, Y H:i" }}
                         </div>
                     </div>
                     <span class="order-status status-{{ order.status }}">
-                        {{ order.get_status_display }}
+                        {% trans order.get_status_display %}
                     </span>
                 </div>
-
                 <div class="order-body">
-                    <p><strong>Customer:</strong> {{ order.customer.username }}</p>
-                    <p><strong>Delivery to:</strong> {{ order.delivery_address|truncatewords:10 }}</p>
-                    <p><strong>Items:</strong> {{ order.items.count }}</p>
-                    <p><strong>Total:</strong> <span style="font-weight: 600; color: var(--primary-color);">
+                    <p><strong>{% trans "Customer" %}:</strong> {{ order.customer.username }}</p>
+                    <p><strong>{% trans "Delivery to" %}:</strong> {{ order.delivery_address|truncatewords:10 }}</p>
+                    <p><strong>{% trans "Items" %}:</strong> {{ order.items.count }}</p>
+                    <p><strong>{% trans "Total" %}:</strong> <span style="font-weight: 600; color: var(--primary-color);">
                         ${{ order.total_price }}
                     </span></p>
                 </div>
-
                 <div class="order-footer">
                     <form action="{% url 'update_order_status' order.id %}" method="post"
                           style="display: flex; gap: 1rem; align-items: center;">
                         {% csrf_token %}
-
                         <select name="status" class="status-select">
                             <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>
-                                Confirmed
+                                {% trans "Confirmed" %}
                             </option>
                             <option value="in_delivery" {% if order.status == 'in_delivery' %}selected{% endif %}>
-                                In Delivery
+                                {% trans "In Delivery" %}
                             </option>
                             <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>
-                                Delivered
+                                {% trans "Delivered" %}
                             </option>
                         </select>
-
                         <button type="submit" class="btn btn-primary btn-small">
-                            Update Status
+                            {% trans "Update Status" %}
                         </button>
                     </form>
-
                     <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary btn-small">
-                        View Details
+                        {% trans "View Details" %}
                     </a>
                 </div>
             </div>
         {% endfor %}
     {% else %}
         <p style="text-align: center; color: var(--text-light); padding: 2rem;">
-            No active orders
+            {% trans "No active orders" %}
         </p>
     {% endif %}
 </div>
-
 <div id="finished-orders" class="tab-content" style="display: none;">
     <h2 style="margin-bottom: 1rem; color: var(--primary-color);">
-        Completed and cancelled orders
+        {% trans "Completed and cancelled orders" %}
     </h2>
-
     {% if finished_orders %}
         {% for order in finished_orders %}
             <div class="order-card">
                 <div class="order-header">
                     <div>
-                        <div class="order-number">Order #{{ order.id }}</div>
+                        <div class="order-number">{% trans "Order #" %}{{ order.id }}</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">
                             {{ order.created_at|date:"F d, Y H:i" }}
                         </div>
                     </div>
                     <span class="order-status status-{{ order.status }}">
-                        {{ order.get_status_display }}
+                        {% trans order.get_status_display %}
                     </span>
                 </div>
-
                 <div class="order-body">
-                    <p><strong>Customer:</strong> {{ order.customer.username }}</p>
-                    <p><strong>Delivery to:</strong> {{ order.delivery_address|truncatewords:10 }}</p>
-                    <p><strong>Items:</strong> {{ order.items.count }}</p>
-                    <p><strong>Total:</strong> <span style="font-weight: 600; color: var(--primary-color);">
+                    <p><strong>{% trans "Customer" %}:</strong> {{ order.customer.username }}</p>
+                    <p><strong>{% trans "Delivery to" %}:</strong> {{ order.delivery_address|truncatewords:10 }}</p>
+                    <p><strong>{% trans "Items" %}:</strong> {{ order.items.count }}</p>
+                    <p><strong>{% trans "Total" %}:</strong> <span style="font-weight: 600; color: var(--primary-color);">
                         ${{ order.total_price }}
                     </span></p>
                 </div>
-
                 <div class="order-footer">
                     <span class="order-total">${{ order.total_price }}</span>
                     <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary btn-small">
-                        View Details
+                        {% trans "View Details" %}
                     </a>
                 </div>
             </div>
         {% endfor %}
     {% else %}
         <p style="text-align: center; color: var(--text-light); padding: 2rem;">
-            No finished orders
+            {% trans "No finished orders" %}
         </p>
     {% endif %}
 </div>
-
 <script>
 function showTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(content => {
         content.style.display = 'none';
     });
-
     document.querySelectorAll('.tab').forEach(tab => {
         tab.classList.remove('active');
     });
-
     if (tabName === 'available') {
         document.getElementById('available-orders').style.display = 'block';
         document.querySelectorAll('.tab')[0].classList.add('active');

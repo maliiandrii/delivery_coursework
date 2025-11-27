@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load translate_tags %}
 
-{% block title %}Reviews - Delivery Service{% endblock %}
+{% block title %} {% trans "Reviews - Delivery Service" %}{% endblock %}
 
 {% block content %}
-<h1 class="mb-3">Customer Reviews</h1>
+<h1 class="mb-3">{% trans "Customer Reviews" %}</h1>
 
 {% if reviews %}
     {% for review in reviews %}
@@ -40,7 +41,7 @@
 {% else %}
     <div style="text-align: center; padding: 3rem; background: white; border-radius: 10px;">
         <p style="font-size: 1.2rem; color: var(--text-light);">
-            No reviews yet. Be the first to leave a review!
+            {% trans "No reviews yet. Be the first to leave a review!" %}
         </p>
     </div>
 {% endif %}

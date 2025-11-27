@@ -3,44 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Delivery Service{% endblock %}</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>{% load translate_tags %}{% block title %}{% trans "Delivery Service" %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=2">
 </head>
 <body>
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="{% url 'product_list' %}" class="logo">Delivery</a>
-
+                <a href="{% url 'product_list' %}" class="logo">{% trans "Delivery" %}</a>
                 <nav class="nav">
                     {% if user.is_authenticated %}
                         {% if not user.is_courier %}
                             <a href="{% url 'cart_view' %}" class="nav-link cart-link">
-                                Cart
+                                {% trans "Cart" %}
                                 {% if cart_count > 0 %}
                                     <span class="cart-badge">{{ cart_count }}</span>
                                 {% endif %}
                             </a>
-                            <a href="{% url 'order_list' %}" class="nav-link">Orders</a>
+                            <a href="{% url 'order_list' %}" class="nav-link">{% trans "Orders" %}</a>
                         {% endif %}
-
-                        <a href="{% url 'review_list' %}" class="nav-link">Reviews</a>
-                        <a href="{% url 'profile' %}" class="nav-link">Profile</a>
-
+                        <a href="{% url 'review_list' %}" class="nav-link">{% trans "Reviews" %}</a>
+                        <a href="{% url 'profile' %}" class="nav-link">{% trans "Profile" %}</a>
                         {% if user.is_courier %}
-                            <a href="{% url 'courier_orders' %}" class="nav-link">My Deliveries</a>
+                            <a href="{% url 'courier_orders' %}" class="nav-link">{% trans "My Deliveries" %}</a>
                         {% endif %}
 
-                        <a href="{% url 'logout' %}" class="btn btn-secondary">Sign Out</a>
+                        {% if request.session.language == 'uk' %}
+                            <a href="?set_language=en" class="nav-link language-switcher">
+                                <img src="/media/flags/en_flag.png" width="20" height="15" alt="EN" class="lang-flag">
+                                {% trans "Switch to English" %}
+                            </a>
+                        {% else %}
+                            <a href="?set_language=uk" class="nav-link language-switcher">
+                                <img src="/media/flags/ua_flag.png" width="20" height="15" alt="UA" class="lang-flag">
+                                {% trans "Switch to Ukrainian" %}
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" class="nav-link">{% trans "Sign Out" %}</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-secondary">Sign In</a>
-                        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+
+                        {% if request.session.language == 'uk' %}
+                            <a href="?set_language=en" class="nav-link language-switcher">
+                                <img src="https://flagcdn.com/w20/us.png" width="20" height="15" alt="EN" class="lang-flag">
+                                {% trans "Switch to English" %}
+                            </a>
+                        {% else %}
+                            <a href="?set_language=uk" class="nav-link language-switcher">
+                                <img src="https://flagcdn.com/w20/ua.png" width="20" height="15" alt="UA" class="lang-flag">
+                                {% trans "Switch to Ukrainian" %}
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'login' %}" class="nav-link">{% trans "Sign In" %}</a>
+                        <a href="{% url 'register' %}" class="nav-link">{% trans "Register" %}</a>
                     {% endif %}
                 </nav>
             </div>
         </div>
     </header>
-
     <main class="main">
         <div class="container">
             {% if messages %}
@@ -52,17 +71,14 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
             {% block content %}{% endblock %}
         </div>
     </main>
-
     <footer class="footer">
         <div class="container">
-            <p>Malii Andrii IP-32</p>
+            <p>{% trans "Malii Andrii IP-32" %}</p>
         </div>
     </footer>
-
     <script src="/static/js/main.js"></script>
 </body>
 </html>

@@ -1,63 +1,56 @@
 {% extends 'base.html' %}
-
-{% block title %}Order #{{ order.id }} - Delivery Service{% endblock %}
-
+{% load translate_tags %}
+{% block title %}{% trans "Order #" %}{{ order.id }} - {% trans "Delivery Service" %}{% endblock %}
 {% block content %}
 <div style="max-width: 800px; margin: 0 auto;">
-    <h1 class="mb-3">Order #{{ order.id }}</h1>
-
+    <h1 class="mb-3">{% trans "Order #" %}{{ order.id }}</h1>
     <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <div class="order-header mb-3">
             <div>
-                <p><strong>Order Date:</strong> {{ order.created_at|date:"F d, Y H:i" }}</p>
-                <p><strong>Status:</strong>
+                <p><strong>{% trans "Order Date" %}:</strong> {{ order.created_at|date:"F d, Y H:i" }}</p>
+                <p><strong>{% trans "Status" %}:</strong>
                     <span class="order-status status-{{ order.status }}">
-                        {{ order.get_status_display }}
+                        {% trans order.get_status_display %}
                     </span>
                 </p>
             </div>
         </div>
-
         <div style="padding: 1.5rem 0; border-top: 1px solid var(--border-color);
                     border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem;">
-            <h3 class="mb-2">Delivery Information</h3>
-            <p><strong>Name:</strong> {{ order.full_name }}</p>
-            <p><strong>Address:</strong> {{ order.delivery_address }}</p>
+            <h3 class="mb-2">{% trans "Delivery Information" %}</h3>
+            <p><strong>{% trans "Name" %}:</strong> {{ order.full_name }}</p>
+            <p><strong>{% trans "Address" %}:</strong> {{ order.delivery_address }}</p>
             {% if order.delivery_date %}
-                <p><strong>Delivery Date:</strong> {{ order.delivery_date|date:"F d, Y" }}</p>
+                <p><strong>{% trans "Delivery Date" %}:</strong> {{ order.delivery_date|date:"F d, Y" }}</p>
             {% endif %}
             {% if order.courier %}
-                <p><strong>Courier:</strong> {{ order.courier.username }}</p>
+                <p><strong>{% trans "Courier" %}:</strong> {{ order.courier.username }}</p>
             {% endif %}
             {% if order.notes %}
-                <p><strong>Notes:</strong> {{ order.notes }}</p>
+                <p><strong>{% trans "Notes" %}:</strong> {{ order.notes }}</p>
             {% endif %}
         </div>
-
-        <h3 class="mb-2">Order Items</h3>
-
+        <h3 class="mb-2">{% trans "Order Items" %}</h3>
         {% for item in order.items.all %}
             <div style="display: flex; justify-content: space-between; padding: 1rem 0;
                         border-bottom: 1px solid var(--border-color);">
                 <div>
                     <p style="font-weight: 600;">{{ item.product.name }}</p>
-                    <p style="color: var(--text-light);">Quantity: {{ item.quantity }}</p>
+                    <p style="color: var(--text-light);">{% trans "Quantity" %}: {{ item.quantity }}</p>
                 </div>
                 <div style="text-align: right;">
                     <p style="font-weight: 600;">${{ item.get_total_price }}</p>
                     <p style="color: var(--text-light); font-size: 0.9rem;">
-                        ${{ item.price }} each
+                        ${{ item.price }} {% trans "each" %}
                     </p>
                 </div>
             </div>
         {% endfor %}
-
         <div style="margin-top: 1.5rem; text-align: right;">
             <p style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">
-                Total: ${{ order.total_price }}
+                {% trans "Total" %}: ${{ order.total_price }}
             </p>
         </div>
     </div>
 </div>
 {% endblock %}
-

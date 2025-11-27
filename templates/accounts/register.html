@@ -1,50 +1,39 @@
 {% extends 'base.html' %}
-
-{% block title %}Register - Delivery Service{% endblock %}
-
+{% load translate_tags %}
+{% block title %}{% trans "Register - Delivery Service" %}{% endblock %}
 {% block content %}
 <div class="auth-container">
     <div class="auth-header">
-        <h1>Welcome!</h1>
+        <h1>{% trans "Welcome!" %}</h1>
     </div>
-
     <form method="post">
         {% csrf_token %}
-
         <div class="form-group">
             {{ form.username }}
         </div>
-
         <div class="form-group">
             {{ form.email }}
         </div>
-
         <div class="form-group">
             {{ form.password1 }}
         </div>
-
         <div class="form-group">
             {{ form.password2 }}
         </div>
-
         <div class="form-group">
             {{ form.phone }}
         </div>
-
         <div class="form-group">
             {{ form.address }}
         </div>
-
         <div class="form-group">
-            <label>Account Type</label>
+            <label>{% trans "Account Type" %}</label>
             {{ form.user_type }}
         </div>
-
-        <button type="submit" class="form-submit">Register</button>
+        <button type="submit" class="form-submit">{% trans "Register" %}</button>
     </form>
-
     <div class="form-footer">
-        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        <p>{% trans "Already have an account?" %} <a href="{% url 'login' %}">{% trans "Login here" %}</a></p>
     </div>
 </div>
 {% endblock %}

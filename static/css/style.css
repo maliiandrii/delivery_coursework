@@ -71,6 +71,26 @@ body {
     color: var(--accent-color);
 }
 
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 400;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.language-switcher:hover {
+    color: var(--accent-color);
+}
+
+.lang-flag {
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+    display: inline-block;
+}
+
 .cart-link {
     position: relative;
 }
